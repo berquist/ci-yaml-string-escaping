@@ -1,0 +1,10 @@
+---
+default:
+  image: 'python:3.11.3-slim-bullseye'
+
+stages:
+  - all
+
+test_1:
+  stage: all
+  script: python -c 'import time'
