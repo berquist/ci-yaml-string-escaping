@@ -15,3 +15,7 @@ jobs:
         run: python -c 'import time'
       - name: test 2
         run: python -c 'print("hello")'
+      - name: test 3
+        run: python -c 'import time; print(time)'
+      - name: test 4
+        run: python -c 'import time; print(f"{dir(time)}")'
