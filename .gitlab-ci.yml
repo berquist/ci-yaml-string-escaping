@@ -1,10 +1,41 @@
 ---
+workflow:
+rules:
+  - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE != "merge_request_event"'
+    variables:
+      DOCKER_TAG: latest
+  - if: '$CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE == "merge_request_event"'
+    variables:
+      DOCKER_TAG: $CI_COMMIT_SHORT_SHA
+
 default:
   image: 'python:3.11.3-slim-bullseye'
 
 stages:
   - all
 
+.my_template_job:
+  script: |
+    echo "${DOCKER_TAG}"
+
 test_1:
+  extends: .my_template_job
   stage: all
-  script: python -c 'import time'
+  script: |
+    python -c 'import time'
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $SCHEDULE_NAME == "test_1"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      changes:
+        - README.md
+
+test_2:
+  extends: .my_template_job
+  stage: all
+  script: |
+    python -c 'print("hello world")'
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $SCHEDULE_NAME == "test_2"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      changes:
+        - README.md
