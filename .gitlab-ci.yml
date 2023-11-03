@@ -29,7 +29,7 @@ pre_commit_run:
     paths:
       - ${PRE_COMMIT_HOME}
   script: |
-    pre-commit run
+    python -m pre_commit run
 
 .my_template_job:
   script: |
