@@ -12,7 +12,24 @@ default:
   image: 'python:3.11.3-slim-bullseye'
 
 stages:
+  - pre_commit_install
+  - pre_commit_run
   - all
+
+pre_commit_install:
+  stage: pre_commit_install
+  script: |
+    python -m pip install pre-commit
+
+pre_commit_run:
+  stage: pre_commit_run
+  variables:
+    PRE_COMMIT_HOME: ${CI_PROJECT_DIR}/.cache/pre-commit
+  cache:
+    paths:
+      - ${PRE_COMMIT_HOME}
+  script: |
+    pre-commit run
 
 .my_template_job:
   script: |
