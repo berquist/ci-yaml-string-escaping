@@ -25,6 +25,7 @@ pre_commit:
       - ${PRE_COMMIT_HOME}
   script: |
     python -m pip install pre-commit
+    apt-get -y update && apt-get -y upgrade
     apt-get install -y --no-install-recommends git
     python -m pre_commit run
 
