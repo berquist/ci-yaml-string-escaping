@@ -9,7 +9,7 @@ workflow:
         DOCKER_TAG: $CI_COMMIT_SHORT_SHA
 
 default:
-  image: 'python:3.11.3-slim-bullseye'
+  image: 'python:3.11.6-slim-bullseye'
 
 stages:
   - pre_commit
@@ -18,12 +18,14 @@ stages:
 pre_commit:
   stage: pre_commit
   variables:
+    DEBIAN_FRONTEND: noninteractive
     PRE_COMMIT_HOME: ${CI_PROJECT_DIR}/.cache/pre-commit
   cache:
     paths:
       - ${PRE_COMMIT_HOME}
   script: |
     python -m pip install pre-commit
+    apt-get install -y --no-install-recommends git
     python -m pre_commit run
 
 .my_template_job:
